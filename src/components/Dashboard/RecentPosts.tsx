@@ -1,43 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, MoreHorizontal, Eye, Heart, MessageCircle, Share } from 'lucide-react';
 import type { Post } from '../../types';
 
 const RecentPosts: React.FC = () => {
-  const posts: Post[] = [
-    {
-      id: '1',
-      content: 'Nouvelle tendance marketing digital : comment l\'IA révolutionne notre façon de créer du contenu ! 🚀\n\n#MarketingDigital #IA #ContentCreator',
-      platforms: ['instagram', 'linkedin'],
-      status: 'published',
-      scheduledDate: '2024-01-15T10:00:00Z',
-      engagement: {
-        likes: 245,
-        comments: 18,
-        shares: 12,
-        reach: 3200,
-        impressions: 5400
-      },
-      createdAt: '2024-01-15T09:00:00Z',
-      updatedAt: '2024-01-15T10:00:00Z'
-    },
-    {
-      id: '2',
-      content: 'Tips du jour : 5 astuces pour booster votre engagement sur les réseaux sociaux ✨\n\n1. Postez au bon moment\n2. Utilisez des hashtags pertinents\n3. Interagissez avec votre communauté\n4. Créez du contenu de qualité\n5. Soyez authentique\n\n#SocialMedia #Tips #CommunityManager',
-      platforms: ['facebook', 'twitter'],
-      status: 'scheduled',
-      scheduledDate: '2024-01-16T14:30:00Z',
-      createdAt: '2024-01-15T16:00:00Z',
-      updatedAt: '2024-01-15T16:00:00Z'
-    },
-    {
-      id: '3',
-      content: 'Behind the scenes : Comment nous utilisons l\'IA pour créer du contenu authentique et engageant 🎬\n\n#BehindTheScenes #ContentCreation #Innovation',
-      platforms: ['tiktok', 'instagram'],
-      status: 'draft',
-      createdAt: '2024-01-15T14:00:00Z',
-      updatedAt: '2024-01-15T14:00:00Z'
-    }
-  ];
+  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/posts.json')
+      .then((res) => res.json())
+      .then((data: Post[]) => setPosts(data))
+      .catch(() => setError('Erreur de chargement'));
+  }, []);
 
   const getPlatformColor = (platform: string) => {
     const colors = {
@@ -70,6 +44,14 @@ const RecentPosts: React.FC = () => {
     };
     return labels[status as keyof typeof labels] || 'Inconnu';
   };
+
+  if (error) {
+    return <p className="text-red-600">{error}</p>;
+  }
+
+  if (!posts) {
+    return <p>Chargement...</p>;
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">

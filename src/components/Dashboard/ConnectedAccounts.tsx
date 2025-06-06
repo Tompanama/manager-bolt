@@ -1,40 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, CheckCircle, AlertCircle } from 'lucide-react';
 import type { ConnectedAccount } from '../../types';
 
 const ConnectedAccounts: React.FC = () => {
-  const accounts: ConnectedAccount[] = [
-    {
-      id: '1',
-      platform: 'instagram',
-      username: '@mon_compte_insta',
-      avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
-      isActive: true,
-      lastSync: '2024-01-15T10:30:00Z'
-    },
-    {
-      id: '2',
-      platform: 'facebook',
-      username: 'Ma Page Facebook',
-      avatar: 'https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
-      isActive: true,
-      lastSync: '2024-01-15T10:25:00Z'
-    },
-    {
-      id: '3',
-      platform: 'linkedin',
-      username: 'Mon Profil Pro',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
-      isActive: false
-    },
-    {
-      id: '4',
-      platform: 'twitter',
-      username: '@mon_twitter',
-      isActive: true,
-      lastSync: '2024-01-15T09:45:00Z'
-    }
-  ];
+  const [accounts, setAccounts] = useState<ConnectedAccount[] | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/accounts.json')
+      .then((res) => res.json())
+      .then((data: ConnectedAccount[]) => setAccounts(data))
+      .catch(() => setError('Erreur de chargement'));
+  }, []);
 
   const getPlatformInfo = (platform: string) => {
     const platforms = {
@@ -47,6 +24,14 @@ const ConnectedAccounts: React.FC = () => {
     };
     return platforms[platform as keyof typeof platforms] || { color: 'from-gray-500 to-gray-600', name: platform };
   };
+
+  if (error) {
+    return <p className="text-red-600">{error}</p>;
+  }
+
+  if (!accounts) {
+    return <p>Chargement...</p>;
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">

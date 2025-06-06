@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "platform": "instagram",
+    "username": "@mon_compte_insta",
+    "avatar": "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
+    "isActive": true,
+    "lastSync": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "2",
+    "platform": "facebook",
+    "username": "Ma Page Facebook",
+    "avatar": "https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
+    "isActive": true,
+    "lastSync": "2024-01-15T10:25:00Z"
+  },
+  {
+    "id": "3",
+    "platform": "linkedin",
+    "username": "Mon Profil Pro",
+    "avatar": "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1",
+    "isActive": false
+  },
+  {
+    "id": "4",
+    "platform": "twitter",
+    "username": "@mon_twitter",
+    "isActive": true,
+    "lastSync": "2024-01-15T09:45:00Z"
+  }
+]
