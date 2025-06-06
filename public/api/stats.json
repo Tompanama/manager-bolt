@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Portée totale",
+    "value": "127.3K",
+    "change": "+12.5%",
+    "changeType": "positive",
+    "icon": "Eye",
+    "color": "blue"
+  },
+  {
+    "title": "Engagement",
+    "value": "8.9K",
+    "change": "+18.2%",
+    "changeType": "positive",
+    "icon": "MessageCircle",
+    "color": "green"
+  },
+  {
+    "title": "Nouveaux abonnés",
+    "value": "2.1K",
+    "change": "+7.3%",
+    "changeType": "positive",
+    "icon": "Users",
+    "color": "purple"
+  },
+  {
+    "title": "Taux croissance",
+    "value": "15.8%",
+    "change": "-2.1%",
+    "changeType": "negative",
+    "icon": "TrendingUp",
+    "color": "orange"
+  }
+]

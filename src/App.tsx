@@ -6,6 +6,7 @@ import QuickActions from './components/Dashboard/QuickActions';
 import AIAssistant from './components/AI/AIAssistant';
 import RecentPosts from './components/Dashboard/RecentPosts';
 import ConnectedAccounts from './components/Dashboard/ConnectedAccounts';
+import SimpleCalendar from './components/Calendar/SimpleCalendar';
 
 function App() {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -66,18 +67,8 @@ function App() {
                 Gérez votre calendrier de publication
               </p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700 text-center">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Calendrier de planification
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Cette fonctionnalité sera disponible prochainement avec un calendrier drag & drop complet
-              </p>
-              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
-                <p className="text-blue-800 dark:text-blue-200">
-                  🗓️ Fonctionnalités à venir : Vue mensuelle/hebdomadaire, planification multi-plateformes, synchronisation automatique
-                </p>
-              </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+              <SimpleCalendar />
             </div>
           </div>
         );

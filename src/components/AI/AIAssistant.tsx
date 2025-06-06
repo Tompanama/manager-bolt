@@ -46,33 +46,48 @@ const AIAssistant: React.FC = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
-
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const aiContent = await fetchOpenAIResponse(message);
       const aiResponse: AIMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: generateAIResponse(message),
+        content: aiContent,
         timestamp: new Date().toISOString()
       };
       setMessages(prev => [...prev, aiResponse]);
+    } catch {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'Erreur lors de la génération de la réponse.',
+          timestamp: new Date().toISOString()
+        }
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
-  const generateAIResponse = (userMessage: string): string => {
-    const responses = {
-      'fête des mères': '🌸 Parfait ! Voici une idée de post pour la fête des mères :\n\n"À toutes les mamans extraordinaires qui jonglent entre mille choses avec le sourire... Vous êtes nos héroïnes du quotidien ! 💝\n\n#FêteDesMères #Maman #Amour #Famille #SuperMaman"\n\nVoulez-vous que je génère aussi une image pour accompagner ce post ?',
-      'hashtags': '🔥 Voici les hashtags trending actuels :\n\n• #ContentCreator #DigitalMarketing\n• #SocialMediaTips #InfluencerLife\n• #BrandStrategy #CommunityManager\n• #CreativeContent #MarketingDigital\n• #Engagement #SocialMediaMarketing\n\nCes hashtags ont une forte portée cette semaine !',
-      'image': '🎨 Je peux vous aider à créer une image ! Décrivez-moi :\n\n• Le style souhaité (moderne, vintage, minimaliste...)\n• Les couleurs préférées\n• Le message à transmettre\n• La plateforme de destination\n\nEt je génèrerai une image parfaite pour votre post !',
-      'default': '✨ Excellente question ! Pour vous donner la meilleure réponse, pouvez-vous me donner plus de détails ? Je peux vous aider avec :\n\n• Création de contenu\n• Stratégie sociale\n• Planification de posts\n• Génération d\'images\n• Idées de campagnes\n\nQue souhaitez-vous développer en priorité ?'
-    };
-
-    const message = userMessage.toLowerCase();
-    if (message.includes('mère') || message.includes('maman')) return responses['fête des mères'];
-    if (message.includes('hashtag')) return responses['hashtags'];
-    if (message.includes('image') || message.includes('photo') || message.includes('visuel')) return responses['image'];
-    return responses['default'];
+  const fetchOpenAIResponse = async (userMessage: string): Promise<string> => {
+    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error('API key manquante');
+    }
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || '';
   };
 
   return (

@@ -1,41 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TrendingUp, Users, MessageCircle, Eye } from 'lucide-react';
+import type { Icon } from 'lucide-react';
+
+interface Stat {
+  title: string;
+  value: string;
+  change: string;
+  changeType: 'positive' | 'negative';
+  icon: keyof typeof iconMap;
+  color: string;
+}
+
+const iconMap = {
+  Eye,
+  MessageCircle,
+  Users,
+  TrendingUp
+};
 
 const StatsCards: React.FC = () => {
-  const stats = [
-    {
-      title: 'Portée totale',
-      value: '127.3K',
-      change: '+12.5%',
-      changeType: 'positive' as const,
-      icon: Eye,
-      color: 'blue'
-    },
-    {
-      title: 'Engagement',
-      value: '8.9K',
-      change: '+18.2%',
-      changeType: 'positive' as const,
-      icon: MessageCircle,
-      color: 'green'
-    },
-    {
-      title: 'Nouveaux abonnés',
-      value: '2.1K',
-      change: '+7.3%',
-      changeType: 'positive' as const,
-      icon: Users,
-      color: 'purple'
-    },
-    {
-      title: 'Taux croissance',
-      value: '15.8%',
-      change: '-2.1%',
-      changeType: 'negative' as const,
-      icon: TrendingUp,
-      color: 'orange'
-    }
-  ];
+  const [stats, setStats] = useState<Stat[] | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetch('/api/stats.json')
+      .then((res) => res.json())
+      .then((data: Stat[]) => setStats(data))
+      .catch(() => setError('Erreur de chargement'));
+  }, []);
 
   const getColorClasses = (color: string, isIcon = false) => {
     const colors = {
@@ -47,10 +39,18 @@ const StatsCards: React.FC = () => {
     return colors[color as keyof typeof colors] || colors.blue;
   };
 
+  if (error) {
+    return <p className="text-red-600">{error}</p>;
+  }
+
+  if (!stats) {
+    return <p>Chargement...</p>;
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {stats.map((stat, index) => {
-        const Icon = stat.icon;
+        const Icon: Icon = iconMap[stat.icon];
         return (
           <div
             key={index}
