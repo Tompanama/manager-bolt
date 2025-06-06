@@ -90,8 +90,9 @@ const ConnectedAccounts: React.FC = () => {
                   <p className="text-sm text-gray-500 dark:text-gray-400">{platformInfo.name}</p>
                   {account.lastSync && (
                     <p className="text-xs text-gray-400 dark:text-gray-500">
-                      Sync: {new Date(account.lastSync).toLocaleDateString('fr-FR', { 
-                        day: '2-digit', 
+                      Sync:{' '}
+                      {new Date(account.lastSync).toLocaleString('fr-FR', {
+                        day: '2-digit',
                         month: '2-digit',
                         hour: '2-digit',
                         minute: '2-digit'
